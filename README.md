@@ -41,15 +41,15 @@ Each friend object has the format:
 - [x] Clone your OWN version of the repository in your terminal
 - [x] cd into the project base directory `cd web-module-project-client-auth`
 - [x] Download project dependencies by running `npm install`
-- [ ] Run `npm start` to start the client code.
-- [ ] Your server code will run automatically, just as they do in sprint challenges.
+- [x] Run `npm start` to start the client code.
+- [x] Your server code will run automatically, just as they do in sprint challenges.
 
 ### Task 2: Project Requirements
 
 #### Build the login component
 
 - [ ] Use the [mockup provided](./login_mockup.png) to build out a simple login component.
-- [ ] In `App.js`, add a route to allow this component to be displayed when navigating to `/` or `/login`
+- [x] In `App.js`, add a route to allow this component to be displayed when navigating to `/` or `/login`
 - [ ] When submitting your login form, save the token returned to localStorage and redirect to the FriendsList route.
 
 #### Build the friendslist component
