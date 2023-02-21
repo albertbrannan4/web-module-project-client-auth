@@ -1,6 +1,44 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+const initLogin = { username: "", password: "" };
+const Login = () => {
+  const [formInput, setFormInput] = useState(initLogin);
+
+  const inputHandler = (e) => {
+    const { name, value } = e.target;
+    setFormInput({ ...formInput, [name]: value });
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    console.log(formInput);
+  };
+
+  return (
+    <LoginPage>
+      <Header>LOGIN</Header>
+      <Form onSubmit={submit}>
+        <Label>USERNAME</Label>
+        <Input
+          type="text"
+          name="username"
+          onChange={inputHandler}
+          value={formInput.username}
+        />
+        <Label>PASSWORD</Label>
+        <Input
+          type="password"
+          name="password"
+          onChange={inputHandler}
+          value={formInput.password}
+        />
+        <Button>SUBMIT</Button>
+      </Form>
+    </LoginPage>
+  );
+};
+
 const LoginPage = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,6 +62,7 @@ const Header = styled.h2`
 `;
 const Label = styled.label`
   font-weight: 900;
+  font-size: 1.5;
 `;
 
 const Input = styled.input`
@@ -39,37 +78,5 @@ const Button = styled.button`
   padding: 3%;
   font-weight: 900;
 `;
-const initLogin = { username: "", password: "" };
-const Login = () => {
-  const [formInput, setFormInput] = useState(initLogin);
-
-  const inputHandler = (e) => {
-    const { name, value } = e.target;
-    setFormInput({ ...formInput, [name]: value });
-  };
-
-  return (
-    <LoginPage>
-      <Header>LOGIN</Header>
-      <Form>
-        <Label>USERNAME</Label>
-        <Input
-          type="text"
-          name="username"
-          onChange={inputHandler}
-          value={formInput.username}
-        />
-        <Label>PASSWORD</Label>
-        <Input
-          type="password"
-          name="password"
-          onChange={inputHandler}
-          value={formInput.password}
-        />
-        <Button>SUBMIT</Button>
-      </Form>
-    </LoginPage>
-  );
-};
 
 export default Login;
