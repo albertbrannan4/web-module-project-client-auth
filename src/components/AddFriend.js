@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
-const initLogin = { username: "", password: "" };
-const Login = () => {
+const initLogin = { name: "", email: "" };
+
+const AddFriend = (props) => {
   const [formInput, setFormInput] = useState(initLogin);
   const navigate = useNavigate();
+
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setFormInput({ ...formInput, [name]: value });
@@ -13,43 +16,36 @@ const Login = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:9000/api/login", formInput)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        navigate("/get_friends");
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {});
+
+    props.addNewFriend(formInput);
+    navigate("/get_friends");
   };
 
   return (
-    <LoginPage>
-      <Header>LOGIN</Header>
+    <PageFormat>
+      <Header>ADD FRIEND</Header>
       <Form onSubmit={submit}>
-        <Label>USERNAME</Label>
+        <Label>FRIEND NAME</Label>
         <Input
           type="text"
-          name="username"
+          name="name"
           onChange={inputHandler}
-          value={formInput.username}
+          value={formInput.name}
         />
-        <Label>PASSWORD</Label>
+        <Label>FRIEND EMAIL</Label>
         <Input
-          type="password"
-          name="password"
+          type="email"
+          name="email"
           onChange={inputHandler}
-          value={formInput.password}
+          value={formInput.email}
         />
         <Button>SUBMIT</Button>
       </Form>
-    </LoginPage>
+    </PageFormat>
   );
 };
 
-const LoginPage = styled.div`
+const PageFormat = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,5 +84,8 @@ const Button = styled.button`
   padding: 3%;
   font-weight: 900;
 `;
+AddFriend.propTypes = {
+  addNewFriend: PropTypes.func,
+};
 
-export default Login;
+export default AddFriend;

@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import GetFriends from "./components/GetFriends";
 import styled from "styled-components";
 import PrivateRoute from "./components/PrivateRoute";
-
+import AddFriend from "./components/AddFriend";
+import axios from "axios";
 function App() {
+  const [friends, setFriends] = useState([]);
+  const getFriendsTool = async () => {
+    const token = localStorage.getItem("token");
+    return axios
+      .create({
+        baseUrl: "http://localhost:9000/api/",
+        headers: { authorization: token },
+      })
+      .get("http://localhost:9000/api/friends")
+      .then((res) => {
+        setFriends(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getFriendsTool();
+  }, []);
+
+  const addingNewFriends = (newFriend) => {
+    const { name, email } = newFriend;
+    const addedFriend = { id: Date.now(), name, email };
+    setFriends([...friends, addedFriend]);
+  };
+
   return (
     <div className="App">
       <NavBar>
@@ -18,7 +46,16 @@ function App() {
             </Link>
           </StyledLinkWrapper>
           <StyledLinkWrapper>
-            <Link style={StyledLink} to="/login">
+            <Link style={StyledLink} to="/add_friend">
+              Add Friend
+            </Link>
+          </StyledLinkWrapper>
+          <StyledLinkWrapper>
+            <Link
+              style={StyledLink}
+              onClick={() => localStorage.clear()}
+              to="/login"
+            >
               Logout
             </Link>
           </StyledLinkWrapper>
@@ -26,10 +63,18 @@ function App() {
       </NavBar>
       <Routes>
         <Route
-          path="/getFriends"
+          path="/get_friends"
           element={
             <PrivateRoute>
-              <GetFriends />
+              <GetFriends friends={friends} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add_friend"
+          element={
+            <PrivateRoute>
+              <AddFriend addNewFriend={addingNewFriends} />
             </PrivateRoute>
           }
         />
@@ -49,7 +94,7 @@ const NavStyles = styled.ul`
   display: flex;
   justify-content: space-around;
   padding: 1%;
-  width: 20%;
+  width: 40%;
 `;
 
 const StyledLinkWrapper = styled.li`

@@ -2,33 +2,33 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-const GetFriends = () => {
-  const [friends, setFriends] = useState([]);
-  const getFriendsTool = async () => {
-    const token = localStorage.getItem("token");
-    return axios
-      .create({
-        baseUrl: "http://localhost:9000/api/",
-        headers: { authorization: token },
-      })
-      .get("http://localhost:9000/api/friends")
-      .then((res) => {
-        setFriends(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+const GetFriends = (props) => {
+  // const [friends, setFriends] = useState([]);
+  // const getFriendsTool = async () => {
+  //   const token = localStorage.getItem("token");
+  //   return axios
+  //     .create({
+  //       baseUrl: "http://localhost:9000/api/",
+  //       headers: { authorization: token },
+  //     })
+  //     .get("http://localhost:9000/api/friends")
+  //     .then((res) => {
+  //       setFriends(...friends, res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    getFriendsTool();
-  }, []);
-  console.log(friends);
+  // useEffect(() => {
+  //   getFriendsTool();
+  // }, []);
+
   return (
     <div>
       <Header>FRIENDS LIST</Header>
       <div>
-        {friends.map((friend) => {
+        {props.friends.map((friend) => {
           return (
             <div key={friend.id}>
               <FriendStyles>
