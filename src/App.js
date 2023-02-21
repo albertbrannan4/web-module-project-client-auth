@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import GetFriends from "./components/GetFriends";
 import styled from "styled-components";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -11,16 +12,27 @@ function App() {
       <NavBar>
         <Brand>FRIENDS DATABASE</Brand>
         <NavStyles>
-          <StyledLink>
-            <Link to="/login">Login</Link>
-          </StyledLink>
-          <StyledLink>
-            <Link to="/login">Logout</Link>
-          </StyledLink>
+          <StyledLinkWrapper>
+            <Link style={StyledLink} to="/login">
+              Login
+            </Link>
+          </StyledLinkWrapper>
+          <StyledLinkWrapper>
+            <Link style={StyledLink} to="/login">
+              Logout
+            </Link>
+          </StyledLinkWrapper>
         </NavStyles>
       </NavBar>
       <Routes>
-        <Route exact path="/getFriends" element={<GetFriends />} />
+        <Route
+          path="/getFriends"
+          element={
+            <PrivateRoute>
+              <GetFriends />
+            </PrivateRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
       </Routes>
     </div>
@@ -40,9 +52,15 @@ const NavStyles = styled.ul`
   width: 20%;
 `;
 
-const StyledLink = styled.li`
+const StyledLinkWrapper = styled.li`
   list-style: none;
+  border: 1px solid black;
+  width: 5em;
+  padding: 5%;
+  background-color: black;
 `;
+
+const StyledLink = { textDecoration: "none", color: "white" };
 
 const Brand = styled.h2`
   font-family: "Hind", sans-serif;
