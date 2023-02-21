@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
+import GetFriends from "./components/GetFriends";
 import styled from "styled-components";
 
 function App() {
@@ -14,12 +15,12 @@ function App() {
             <Link to="/login">Login</Link>
           </StyledLink>
           <StyledLink>
-            <Link to="/">Logout</Link>
+            <Link to="/login">Logout</Link>
           </StyledLink>
         </NavStyles>
       </NavBar>
       <Routes>
-        <Route exact path="/" />
+        <Route exact path="/getFriends" element={<GetFriends />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </div>

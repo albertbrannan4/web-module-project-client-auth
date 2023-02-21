@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const initLogin = { username: "", password: "" };
 const Login = () => {
   const [formInput, setFormInput] = useState(initLogin);
-
+  const navigate = useNavigate();
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setFormInput({ ...formInput, [name]: value });
@@ -12,7 +13,16 @@ const Login = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(formInput);
+    axios
+      .post("http://localhost:9000/api/login", formInput)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        navigate("/getFriends");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
   };
 
   return (
