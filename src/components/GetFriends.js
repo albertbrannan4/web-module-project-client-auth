@@ -1,29 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 const GetFriends = () => {
-  const getFriendsTool = () => {
+  const [friends, setFriends] = useState([]);
+  const getFriendsTool = async () => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    //return axios;
-    //   .create({
-    //     baseUrl: "http://localhost:9000/api/friends",
-    //     headers: { authorization: token },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
+    return axios
+      .create({
+        baseUrl: "http://localhost:9000/api/",
+        headers: { authorization: token },
+      })
+      .get("http://localhost:9000/api/friends")
+      .then((res) => {
+        setFriends(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   useEffect(() => {
     getFriendsTool();
   }, []);
-
+  console.log(friends);
   return (
     <div>
-      <h1>Hello Friends</h1>
+      {friends.map((friend) => {
+        return (
+          <div key={friend.id}>
+            <p>{friend.name}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
