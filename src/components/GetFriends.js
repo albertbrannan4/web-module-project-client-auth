@@ -7,7 +7,7 @@ const GetFriends = (props) => {
     props.getFriendsTool();
   }, []);
   useEffect(() => {}, [props.friends]);
-  console.log(props.friends);
+
   return (
     <div>
       <Header>FRIENDS LIST</Header>

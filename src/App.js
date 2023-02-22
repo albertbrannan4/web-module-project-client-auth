@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
@@ -24,26 +24,8 @@ const postFriend = (newFriend) => {
     .catch((err) => console.log(err));
 };
 
-// const logout = () => {
-//   const token = localStorage.getItem("token");
-//   axios
-//     .create({
-//       baseUrl: "http://localhost:9000/api/",
-//       headers: { authorization: token },
-//     })
-//     .post("http://localhost:9000/api/logout", token)
-//     .then((res) => {
-//       console.log(res);
-//     })
-//     .catch((err) => console.log(err))
-//     .finally(() => {
-//       localStorage.clear();
-//     });
-// };
-
 function App() {
   const [friends, setFriends] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const getFriendsTool = async () => {
@@ -59,6 +41,23 @@ function App() {
       })
       .catch((err) => {
         console.error(err);
+      });
+  };
+  const logout = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .create({
+        baseUrl: "http://localhost:9000/api/",
+        headers: { authorization: token },
+      })
+      .post("http://localhost:9000/api/logout", token)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        localStorage.clear();
+        navigate("/");
       });
   };
 
@@ -78,17 +77,14 @@ function App() {
               Login
             </Link>
           </StyledLinkWrapper>
+
           <StyledLinkWrapper>
             <Link style={StyledLink} to="/add_friend">
               Add Friend
             </Link>
           </StyledLinkWrapper>
           <StyledLinkWrapper>
-            <Link
-              style={StyledLink}
-              onClick={() => localStorage.clear()}
-              to="/"
-            >
+            <Link style={StyledLink} onClick={() => logout()} to="/">
               Logout
             </Link>
           </StyledLinkWrapper>
@@ -122,6 +118,8 @@ const NavBar = styled.nav`
   justify-content: space-between;
   border-bottom: 3px solid black;
   margin-bottom: 1%;
+  align-items: center;
+  background-color: maroon;
 `;
 const NavStyles = styled.ul`
   display: flex;
@@ -142,6 +140,9 @@ const StyledLink = { textDecoration: "none", color: "white" };
 
 const Brand = styled.h2`
   font-family: "Hind", sans-serif;
+  font-size: 2.4em;
+  color: white;
+  margin: 2%;
 `;
 
 export default App;

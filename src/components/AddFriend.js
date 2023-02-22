@@ -20,7 +20,7 @@ const AddFriend = (props) => {
     props.addNewFriend(formInput);
     navigate("/get_friends");
   };
-  console.log(formInput);
+
   return (
     <PageFormat>
       <Header>ADD FRIEND</Header>
