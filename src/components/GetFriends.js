@@ -1,29 +1,13 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const GetFriends = (props) => {
-  // const [friends, setFriends] = useState([]);
-  // const getFriendsTool = async () => {
-  //   const token = localStorage.getItem("token");
-  //   return axios
-  //     .create({
-  //       baseUrl: "http://localhost:9000/api/",
-  //       headers: { authorization: token },
-  //     })
-  //     .get("http://localhost:9000/api/friends")
-  //     .then((res) => {
-  //       setFriends(...friends, res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getFriendsTool();
-  // }, []);
-
+  useEffect(() => {
+    props.getFriendsTool();
+  }, []);
+  useEffect(() => {}, [props.friends]);
+  console.log(props.friends);
   return (
     <div>
       <Header>FRIENDS LIST</Header>
@@ -40,6 +24,11 @@ const GetFriends = (props) => {
       </div>
     </div>
   );
+};
+
+GetFriends.propTypes = {
+  friends: PropTypes.array,
+  getFriendsTool: PropTypes.func,
 };
 
 const FriendStyles = styled.p`

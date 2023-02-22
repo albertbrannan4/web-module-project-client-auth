@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
@@ -7,8 +7,45 @@ import styled from "styled-components";
 import PrivateRoute from "./components/PrivateRoute";
 import AddFriend from "./components/AddFriend";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const postFriend = (newFriend) => {
+  const token = localStorage.getItem("token");
+  axios
+    .create({
+      baseUrl: "http://localhost:9000/api/",
+      headers: { authorization: token },
+    })
+    .post("http://localhost:9000/api/friends", newFriend)
+    .then((res) => {
+      // setState([...state, newFriend]);
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+};
+
+// const logout = () => {
+//   const token = localStorage.getItem("token");
+//   axios
+//     .create({
+//       baseUrl: "http://localhost:9000/api/",
+//       headers: { authorization: token },
+//     })
+//     .post("http://localhost:9000/api/logout", token)
+//     .then((res) => {
+//       console.log(res);
+//     })
+//     .catch((err) => console.log(err))
+//     .finally(() => {
+//       localStorage.clear();
+//     });
+// };
+
 function App() {
   const [friends, setFriends] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
   const getFriendsTool = async () => {
     const token = localStorage.getItem("token");
     return axios
@@ -25,14 +62,10 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    getFriendsTool();
-  }, []);
-
   const addingNewFriends = (newFriend) => {
     const { name, email } = newFriend;
     const addedFriend = { id: Date.now(), name, email };
-    setFriends([...friends, addedFriend]);
+    postFriend(addedFriend);
   };
 
   return (
@@ -41,7 +74,7 @@ function App() {
         <Brand>FRIENDS DATABASE</Brand>
         <NavStyles>
           <StyledLinkWrapper>
-            <Link style={StyledLink} to="/login">
+            <Link style={StyledLink} to="/">
               Login
             </Link>
           </StyledLinkWrapper>
@@ -54,7 +87,7 @@ function App() {
             <Link
               style={StyledLink}
               onClick={() => localStorage.clear()}
-              to="/login"
+              to="/"
             >
               Logout
             </Link>
@@ -66,7 +99,7 @@ function App() {
           path="/get_friends"
           element={
             <PrivateRoute>
-              <GetFriends friends={friends} />
+              <GetFriends friends={friends} getFriendsTool={getFriendsTool} />
             </PrivateRoute>
           }
         />
@@ -78,7 +111,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </div>
   );
